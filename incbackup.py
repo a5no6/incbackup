@@ -571,13 +571,14 @@ def backup(mode):
             opt_7zip.append(backup_config.password)
         if mode=='backup':
             msg = ""
+            reply = b''
             compress_file_name = backup_config.get_backup_temp_filename_comp(backup_number)
             nocompress_file_name = backup_config.get_backup_temp_filename_nocomp(backup_number)
             n_compress,n_nocom = make_archive_list_for_7z(backup_config.ARCHIVE_FOLDER + backup_number +"/"+backup_config.ARCHIVE_FILE_INFO_NAME,backup_config.NOCOMPRESS_EXTNSION,compress_file_name,nocompress_file_name)
             if n_compress>0:
                 print("compressing %d files"%n_compress)
                 try:
-                    reply = subprocess.check_output([SEVEN_ZIP,"a", backup_config.ARCHIVE_FOLDER + backup_number +backup_config.ARCHIVE_FILE_COMPRESS,"-mx1","-v1g","@%s"%compress_file_name]+opt_7zip)
+                    reply += subprocess.check_output([SEVEN_ZIP,"a", backup_config.ARCHIVE_FOLDER + backup_number +backup_config.ARCHIVE_FILE_COMPRESS,"-mx1","-v1g","@%s"%compress_file_name]+opt_7zip)
                     msg += reply.decode()
                 except subprocess.CalledProcessError:
                     print("Error occured while arhive")
